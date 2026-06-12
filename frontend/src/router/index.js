@@ -33,6 +33,26 @@ const routes = [
         component: () => import('@/views/pc/Work.vue')
       },
       {
+        path: 'candidate',
+        component: () => import('@/views/pc/Candidate.vue')
+      },
+      {
+        path: 'team',
+        component: () => import('@/views/pc/Team.vue')
+      },
+      {
+        path: 'trial-assignment',
+        component: () => import('@/views/pc/TrialAssignment.vue')
+      },
+      {
+        path: 'trial-record',
+        component: () => import('@/views/pc/TrialRecord.vue')
+      },
+      {
+        path: 'risk-list',
+        component: () => import('@/views/pc/RiskList.vue')
+      },
+      {
         path: 'user',
         component: () => import('@/views/pc/User.vue')
       }
