@@ -53,5 +53,12 @@ export const candidateApi = {
       method: 'post',
       data: { remark }
     })
+  },
+
+  listAvailableForTrial() {
+    return request({
+      url: '/candidate/available-for-trial',
+      method: 'get'
+    })
   }
 }

@@ -131,4 +131,15 @@ public class CandidateController {
             return Result.error("操作失败：" + e.getMessage());
         }
     }
+
+    @GetMapping("/available-for-trial")
+    @ApiOperation("查询可安排试岗的候选人列表")
+    public Result<?> listAvailableForTrial() {
+        try {
+            return Result.success(candidateService.listAvailableForTrial());
+        } catch (Exception e) {
+            log.error("查询可安排试岗候选人失败", e);
+            return Result.error("查询失败：" + e.getMessage());
+        }
+    }
 }

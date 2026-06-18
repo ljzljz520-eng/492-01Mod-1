@@ -77,21 +77,25 @@ public class TrialRecordServiceImpl extends ServiceImpl<TrialRecordMapper, Trial
         record.setUpdateTime(LocalDateTime.now());
         this.save(record);
 
-        if ("yes".equals(record.getCanConvert())) {
-            assignment.setStatus("completed");
-            Candidate candidate = candidateService.getById(assignment.getCandidateId());
-            if (candidate != null) {
-                candidate.setStatus("hired");
-                candidate.setUpdateTime(LocalDateTime.now());
-                candidateService.updateById(candidate);
-            }
-        } else if ("no".equals(record.getCanConvert())) {
-            assignment.setStatus("completed");
+        if (record.getIsArrived() != null && record.getIsArrived() == 0) {
+            trialAssignmentService.markAbsent(assignment.getId());
         } else {
-            assignment.setStatus("in_progress");
+            if ("yes".equals(record.getCanConvert())) {
+                assignment.setStatus("completed");
+                Candidate candidate = candidateService.getById(assignment.getCandidateId());
+                if (candidate != null) {
+                    candidate.setStatus("hired");
+                    candidate.setUpdateTime(LocalDateTime.now());
+                    candidateService.updateById(candidate);
+                }
+            } else if ("no".equals(record.getCanConvert())) {
+                assignment.setStatus("completed");
+            } else {
+                assignment.setStatus("in_progress");
+            }
+            assignment.setUpdateTime(LocalDateTime.now());
+            trialAssignmentService.updateById(assignment);
         }
-        assignment.setUpdateTime(LocalDateTime.now());
-        trialAssignmentService.updateById(assignment);
 
         return record;
     }

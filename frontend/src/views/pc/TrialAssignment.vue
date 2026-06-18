@@ -486,14 +486,9 @@ const loadTeamList = async () => {
 
 const loadPassedCandidates = async () => {
   try {
-    const res = await candidateApi.page({
-      current: 1,
-      size: 100,
-      interviewStatus: 'passed',
-      isInRisk: 0
-    })
+    const res = await candidateApi.listAvailableForTrial()
     if (res.code === 200) {
-      passedCandidates.value = res.data.records
+      passedCandidates.value = res.data
     }
   } catch (error) {
     console.error(error)

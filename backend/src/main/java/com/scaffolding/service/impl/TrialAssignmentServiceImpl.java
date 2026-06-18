@@ -70,6 +70,17 @@ public class TrialAssignmentServiceImpl extends ServiceImpl<TrialAssignmentMappe
         if (riskListService.isInRiskList(assignment.getCandidateId())) {
             throw new RuntimeException("候选人在风险名单中，不能安排试岗");
         }
+        if ("hired".equals(candidate.getStatus())) {
+            throw new RuntimeException("候选人已录用，不能重复安排试岗");
+        }
+
+        LambdaQueryWrapper<TrialAssignment> existWrapper = new LambdaQueryWrapper<>();
+        existWrapper.eq(TrialAssignment::getCandidateId, assignment.getCandidateId());
+        existWrapper.in(TrialAssignment::getStatus, "pending", "in_progress");
+        Long existCount = this.count(existWrapper);
+        if (existCount > 0) {
+            throw new RuntimeException("候选人已有未完成的试岗安排，不能重复安排");
+        }
 
         Team team = teamService.getById(assignment.getTeamId());
         if (team == null) {
